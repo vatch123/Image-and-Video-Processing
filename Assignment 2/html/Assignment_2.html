@@ -1,0 +1,740 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Assignment_2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-09-27"><meta name="DC.source" content="Assignment_2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Image and Video Processing Assignment - 2</a></li><li><a href="#3">Question 1: The Maar Edge Detector</a></li><li><a href="#4">Gaussian Blur Matrix</a></li><li><a href="#5">Laplacian of Gaussian Matrix</a></li><li><a href="#6">Convolution of Matrices</a></li><li><a href="#7">Zero Crossing Detector</a></li><li><a href="#8">Maar Edge Detector</a></li><li><a href="#9">Question 2: Canny Edge Detection</a></li><li><a href="#10">Gradient of an image</a></li><li><a href="#11">Nonmax supression</a></li><li><a href="#12">Thresholding</a></li><li><a href="#13">Canny Edge Detector</a></li><li><a href="#14">Canny Edge Results</a></li><li><a href="#15">Question 3: Phase only reconstruction</a></li><li><a href="#16">Discrete Fourier Transform</a></li><li><a href="#17">Log Transformation</a></li><li><a href="#18">Phase only reconstruction</a></li></ul></div><pre class="codeinput"><span class="comment">%NAME: Vatsalya Chaubey</span>
+<span class="comment">%INST: IIT, Bhubaneswar</span>
+<span class="comment">%DATE: 19.09.2020</span>
+<span class="comment">%CATEGORY: Btech</span>
+<span class="comment">%BRANCH: Electronics and Communication</span>
+<span class="comment">%Roll Number: 17EC01044</span>
+</pre><h2 id="2">Image and Video Processing Assignment - 2</h2><pre class="codeinput">clc;
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+</pre><h2 id="3">Question 1: The Maar Edge Detector</h2><pre class="codeinput"><span class="comment">% I will first create the functions which are needed for implementation in</span>
+<span class="comment">% other parts of the code. Finally, the entire code will be written</span>
+<span class="comment">% together to detect the edges.</span>
+</pre><h2 id="4">Gaussian Blur Matrix</h2><pre class="language-matlab">
+<span class="comment">% Function to calculate the Gaussian matrix for a given value of standard</span>
+<span class="comment">% deviation</span>
+
+<span class="keyword">function</span> [blur] = gaussian_blur(sigma)
+    
+    <span class="comment">% sigma: The std deviation of the gaussian kernel used</span>
+
+    <span class="comment">% Find the filter dimension using the 6*sigma rule as the majority of</span>
+    <span class="comment">% the gaussian is</span>
+    filter_dims = ceil(6*sigma);
+    
+    <span class="keyword">if</span> mod(filter_dims,2)==0
+        filter_dims = filter_dims + 1;
+    <span class="keyword">end</span>
+
+    blur = zeros(filter_dims, filter_dims);
+    centre_x = ceil(filter_dims/2);
+    centre_y = ceil(filter_dims/2);
+    
+    <span class="keyword">for</span> i=1:filter_dims
+        <span class="keyword">for</span> j=1:filter_dims
+            x = i - centre_x;
+            y = j - centre_y;
+            blur(i,j) = exp(-1*(x^2 + y^2)/(2*sigma^2))/(2*pi*sigma^2);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+</pre><h2 id="5">Laplacian of Gaussian Matrix</h2><pre class="language-matlab">
+<span class="comment">% Function to calculate the Laplacian of Gaussian matrix for a given value of standard</span>
+<span class="comment">% deviation</span>
+
+<span class="keyword">function</span> [blur] = LOG_filter(sigma)
+
+    <span class="comment">% sigma: The std deviation of the gaussian kernel used</span>
+
+    filter_dims = ceil(6*sigma);
+    
+    <span class="keyword">if</span> filter_dims<span class="comment">%2==0</span>
+        filter_dims = filter_dims + 1;
+    <span class="keyword">end</span>
+
+    blur = zeros(filter_dims, filter_dims);
+    centre_x = ceil(filter_dims/2);
+    centre_y = ceil(filter_dims/2);
+    
+    <span class="keyword">for</span> i=1:filter_dims
+        <span class="keyword">for</span> j=1:filter_dims
+            x = i - centre_x;
+            y = j - centre_y;
+            blur(i,j) = exp(-1*(x^2 + y^2)/(2*sigma^2))*((x^2 + y^2 - 2*sigma^2)/(2*pi*sigma^6));
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+</pre><h2 id="6">Convolution of Matrices</h2><pre class="language-matlab">
+<span class="comment">% Function to convolve an image with a filter. This is done assuming that</span>
+<span class="comment">% the filter size is odd.</span>
+<span class="keyword">function</span> [oimg] = convolve(img, filter)
+    <span class="comment">% img: input image</span>
+    <span class="comment">% filter: filter for convolution</span>
+    [frow, fcol] = size(filter);
+    [irow, icol] = size(img);
+    
+    <span class="comment">% The dimensions of the final image</span>
+    oimg = zeros(irow - frow + 1, icol - fcol + 1);
+    <span class="keyword">for</span> i=1 + floor(frow/2) : irow - floor(frow/2)
+        <span class="keyword">for</span> j=1 + floor(fcol/2) : icol - floor(fcol/2)
+            
+            <span class="comment">% Calculating the image section on which the filter will be</span>
+            <span class="comment">% multiplied</span>
+            x_start = i - floor(frow/2);
+            y_start = j - floor(fcol/2);
+            
+            x_end = i + floor(frow/2);
+            y_end = j + floor(fcol/2);
+            
+            img_section = img(x_start:x_end, y_start:y_end);
+            oimg(i - floor(frow/2),j - floor(fcol/2)) = sum(sum(img_section.*filter));
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+
+</pre><h2 id="7">Zero Crossing Detector</h2><pre class="language-matlab">
+<span class="comment">% Function to calculate the zero crossings based on the number of edges and</span>
+<span class="comment">% the threshold</span>
+<span class="keyword">function</span> [oimg] = zero_crossing(img, thresh)
+    <span class="comment">% img: input image</span>
+    
+    oimg = zeros(size(img));
+    [row, col] = size(img);
+    <span class="keyword">for</span> i=2:row-1
+        <span class="keyword">for</span> j=2:col-1
+            <span class="comment">% checking for vertical zero crossings</span>
+            count = 0;
+            <span class="keyword">if</span>(img(i-1,j) * img(i+1,j)&lt;0 &amp;&amp; abs(img(i-1,j) - img(i+1,j))&gt;thresh)
+                count = count + 1;
+            <span class="keyword">end</span>
+            
+            <span class="comment">% checking for horizontal zero crossings</span>
+            <span class="keyword">if</span>(img(i,j-1) * img(i,j+1)&lt;0 &amp;&amp; abs(img(i,j-1) - img(i,j+1))&gt;thresh)
+                count = count + 1;
+            <span class="keyword">end</span>
+            
+            <span class="comment">% checking for positive diagonal zero crossings</span>
+            <span class="keyword">if</span>(img(i-1,j-1) * img(i+1,j+1)&lt;0 &amp;&amp; abs(img(i-1,j-1) - img(i+1,j+1))&gt;thresh)
+                count = count + 1;
+            <span class="keyword">end</span>
+            
+            <span class="comment">% checking for negative diagonal zero crossings</span>
+            <span class="keyword">if</span>(img(i-1,j+1) * img(i+1,j-1)&lt;0 &amp;&amp; abs(img(i-1,j+1) - img(i+1,j-1))&gt;thresh)
+                count = count + 1;
+            <span class="keyword">end</span>
+            
+            <span class="keyword">if</span> count&gt;=2
+                oimg(i,j) = 255;
+            <span class="keyword">end</span>
+            
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+
+</pre><h2 id="8">Maar Edge Detector</h2><pre class="codeinput"><span class="comment">% Read the input image as a double</span>
+orig_img = imread(<span class="string">'cameraman.tif'</span>);
+img = double(orig_img);
+
+<span class="comment">% The std deviation of the LOG filter</span>
+std_dev = 0.9;
+filter = LOG_filter(std_dev);
+
+<span class="comment">% We need to pad the image with zeros such that after convolution the size</span>
+<span class="comment">% of the image is not reduced.</span>
+pad = size(filter,1) - 1;
+padded_img = padding(img, pad, pad, 0);
+
+<span class="comment">% Convolve with the filter</span>
+out = convolve(padded_img, filter);
+
+<span class="comment">% To detect the edges we need to detect the zero crossings</span>
+edges0 = zero_crossing(out, 0);
+edges4 = zero_crossing(out, 4);
+edges6 = zero_crossing(out, 6);
+edges10 = zero_crossing(out, 10);
+
+figure(<span class="string">'Name'</span>, <span class="string">'Maar Edge Detector'</span>);
+subplot(131)
+imshow(orig_img);
+title(<span class="string">'Original Image'</span>);
+
+subplot(132)
+imshow(out);
+title(<span class="string">'Convolution with LOG filter (Std dev = 0.9)'</span>);
+
+subplot(133)
+imshow(edges0);
+title(<span class="string">'Threshold = 0'</span>);
+
+figure(<span class="string">'Name'</span>,<span class="string">'Edges for different thresholds'</span>);
+subplot(131)
+imshow(edges4);
+title(<span class="string">'Threshold = 4'</span>);
+
+subplot(132)
+imshow(edges6);
+title(<span class="string">'Threshold = 6'</span>);
+
+subplot(133)
+imshow(edges10);
+title(<span class="string">'Threshold = 10'</span>);
+
+<span class="comment">% Repeating the same set with different std dev</span>
+
+<span class="comment">% The std deviation of the LOG filter</span>
+std_dev = 2;
+filter = LOG_filter(std_dev);
+
+<span class="comment">% We need to pad the image with zeros such that after convolution the size</span>
+<span class="comment">% of the image is not reduced.</span>
+pad = size(filter,1) - 1;
+padded_img = padding(img, pad, pad, 0);
+
+<span class="comment">% Convolve with the filter</span>
+out = convolve(padded_img, filter);
+
+<span class="comment">% To detect the edges we need to detect the zero crossings</span>
+edges0 = zero_crossing(out, 0);
+edges4 = zero_crossing(out, 4);
+edges6 = zero_crossing(out, 6);
+edges10 = zero_crossing(out, 10);
+
+figure(<span class="string">'Name'</span>, <span class="string">'Maar Edge Detector'</span>);
+subplot(131)
+imshow(orig_img);
+title(<span class="string">'Original Image'</span>);
+
+subplot(132)
+imshow(out);
+title(<span class="string">'Convolution with LOG filter (Std dev = 2)'</span>);
+
+subplot(133)
+imshow(edges0);
+title(<span class="string">'Threshold = 0'</span>);
+
+figure(<span class="string">'Name'</span>,<span class="string">'Edges for different thresholds'</span>);
+subplot(131)
+imshow(edges4);
+title(<span class="string">'Threshold = 4'</span>);
+
+subplot(132)
+imshow(edges6);
+title(<span class="string">'Threshold = 6'</span>);
+
+subplot(133)
+imshow(edges10);
+title(<span class="string">'Threshold = 10'</span>);
+</pre><img vspace="5" hspace="5" src="Assignment_2_01.png" alt=""> <img vspace="5" hspace="5" src="Assignment_2_02.png" alt=""> <img vspace="5" hspace="5" src="Assignment_2_03.png" alt=""> <img vspace="5" hspace="5" src="Assignment_2_04.png" alt=""> <h2 id="9">Question 2: Canny Edge Detection</h2><pre class="codeinput"><span class="comment">% Creating other needed functions</span>
+</pre><h2 id="10">Gradient of an image</h2><pre class="language-matlab">
+<span class="comment">% Returns the Sobel gradient kernel</span>
+<span class="keyword">function</span> [grad_filter] = grad_filter(x_y)
+    <span class="comment">% dir: the direction in which gradient is to be calculated</span>
+    
+    <span class="comment">% Assuming the direction is X</span>
+    grad_filter = [-1,0,1;-2,0,2;-1,0,1];
+    <span class="keyword">if</span> (x_y==<span class="string">'Y'</span>)
+        grad_filter = grad_filter';
+    <span class="keyword">end</span>
+        
+<span class="keyword">end</span>
+
+
+</pre><h2 id="11">Nonmax supression</h2><pre class="language-matlab">
+<span class="comment">% Performs nonmax supression on an image given its gradient</span>
+<span class="keyword">function</span> [supressed] = nonmax_supression(mag, angle)
+    <span class="comment">% mag: The magnitude of the image gradient</span>
+    <span class="comment">% phase: The phase of the image gradient</span>
+    
+    supressed = zeros(size(mag));
+    [row, col] = size(mag);
+    <span class="keyword">for</span> i=2:row-1
+        <span class="keyword">for</span> j=2:col-1
+            l = 255;
+            m = 255;
+            ang = angle(i,j);
+            <span class="keyword">if</span> ((ang&lt;22.5) || (ang&gt;157.5))
+                l = mag(i,j-1);
+                m = mag(i,j+1);
+            <span class="keyword">elseif</span> ((ang&gt;=22.5) &amp;&amp; (ang&lt;67.5))
+                l = mag(i-1,j-1);
+                m = mag(i+1,j+1);
+            <span class="keyword">elseif</span> ((ang&gt;=67.5) &amp;&amp; (ang&lt;112.5))
+                l = mag(i-1,j);
+                m = mag(i+1,j);
+            <span class="keyword">elseif</span> ((ang&gt;=112.5) &amp;&amp; (ang&lt;157.5))
+                l = mag(i-1,j+1);
+                m = mag(i+1,j-1);
+            <span class="keyword">end</span>
+            <span class="keyword">if</span> (mag(i,j)&gt;l &amp;&amp; mag(i,j)&gt;m)
+                supressed(i,j) = mag(i,j);
+            <span class="keyword">else</span>
+                supressed(i,j) = 0;
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    
+<span class="keyword">end</span>
+
+
+</pre><h2 id="12">Thresholding</h2><pre class="language-matlab">
+<span class="comment">% Thresholding after nonmax supression</span>
+<span class="keyword">function</span> [output] = thresholding(img, thresh1)
+    <span class="comment">% img: The input image</span>
+    <span class="comment">% thresh1: The higher threshold</span>
+    
+    img(img&gt;thresh1) = 255;
+    img(img&lt;thresh1) = 0;
+    output = img;    
+<span class="keyword">end</span>
+
+
+</pre><h2 id="13">Canny Edge Detector</h2><pre class="language-matlab">
+<span class="keyword">function</span> [final] = Canny_edge(img, std_dev,thresh)
+    <span class="comment">% std_dev: The standard deviation of Gaussian kernel</span>
+    <span class="comment">% thresh1: Higher threshold for dual thresholding</span>
+    <span class="comment">% thresh2: Lower threshold for dual thresholding</span>
+
+    filter = gaussian_blur(std_dev);
+
+    <span class="comment">% We need to pad the image with zeros such that after convolution the size</span>
+    <span class="comment">% of the image is not reduced.</span>
+    pad = size(filter,1) - 1;
+    padded_img = padding(img, pad, pad, 0);
+
+    blurred = convolve(padded_img, filter);
+
+    <span class="comment">% Calculating gradients</span>
+    g_x = grad_filter(<span class="string">'X'</span>);
+    g_y = grad_filter(<span class="string">'Y'</span>);
+
+    <span class="comment">% Pad the blurred image again</span>
+    blurred = padding(blurred,2,2,0);
+
+    G_x = convolve(blurred, g_x);
+    G_y = convolve(blurred, g_y);
+
+    G = sqrt(G_x.^2 + G_y.^2);
+    theta = atan2(G_y, G_x) * 180/pi;
+
+    <span class="comment">% Fixing the negative angles for ease of calculation</span>
+    theta(theta&lt;0) = theta(theta&lt;0)+180;
+
+    <span class="comment">% Performing Nonmax supression</span>
+    supressed = nonmax_supression(G,theta);
+
+    <span class="comment">% Performing hystersis thresholding</span>
+    final = thresholding(supressed, thresh);
+    
+<span class="keyword">end</span>
+
+
+</pre><h2 id="14">Canny Edge Results</h2><p>Read the input image Read the input image as a double</p><pre class="codeinput">orig_img = imread(<span class="string">'cameraman.tif'</span>);
+img = double(orig_img);
+
+output4 = Canny_edge(img, 0.4, 200);
+output30 = Canny_edge(img, 3, 20);
+
+figure(<span class="string">'Name'</span>, <span class="string">'Canny Edge Detector'</span>);
+subplot(131)
+imshow(orig_img);
+title(<span class="string">'Original Image'</span>);
+
+subplot(132)
+imshow(output4);
+title(<span class="string">'Threshold=200, Std dev=0.4'</span>);
+
+subplot(133)
+imshow(output30);
+title(<span class="string">'Threshold=20, Std dev=3'</span>);
+</pre><img vspace="5" hspace="5" src="Assignment_2_05.png" alt=""> <h2 id="15">Question 3: Phase only reconstruction</h2><pre class="codeinput"><span class="comment">% Here, again we will write the dft and idft functions</span>
+</pre><h2 id="16">Discrete Fourier Transform</h2><pre class="language-matlab">
+<span class="comment">% The function to calculate the Discrete Fourier Transform of an image</span>
+<span class="keyword">function</span> [fourier2D] = dft2D(img)
+    <span class="comment">% img: The image for which fourier is to be calculated</span>
+
+    M = size(img,1);
+    N = size(img,2);
+
+    <span class="comment">% Performing 2D fourier transform as two successive 1D transforms as once</span>
+    <span class="comment">% over the rows and the other one over the columns</span>
+
+    <span class="comment">% First, over rows. Creating a _N_*_N_ weight matrix as we are taking a</span>
+    <span class="comment">% N-point DFT</span>
+    n = -(N-1)/2:1:(N-1)/2;
+    k = -(N-1)/2:1:(N-1)/2;
+    weight_row = n' * k;
+    weight_row = (-2*pi*1i/N) .* weight_row;
+    weight_row = exp(weight_row);
+
+    <span class="comment">% Secondly, now taking M-point DFT across the columns</span>
+    m = -(M-1)/2:1:(M-1)/2;
+    k = -(M-1)/2:1:(M-1)/2;
+    weight_col = m' * k;
+    weight_col = (-2*pi*1i/M) .* weight_col;
+    weight_col = exp(weight_col);
+
+    <span class="comment">% Taking M-point DFT of the previous N-point DFT</span>
+    fourier2D = weight_row * (img * weight_col);
+    
+<span class="keyword">end</span>
+
+
+</pre><h2 id="17">Log Transformation</h2><pre class="language-matlab">
+<span class="comment">% Function to calculate the log transformation</span>
+<span class="keyword">function</span> [log_transformed] = log_transformation(magn, scale)
+    <span class="comment">% magn: The magnitude of image whose log transform is to be calculated</span>
+    <span class="comment">% scale: Scaling Factor</span>
+    
+    log_transformed = log10(1 + magn) * scale;
+    
+<span class="keyword">end</span>
+
+
+</pre><h2 id="18">Phase only reconstruction</h2><p>Read the input image Read the input image as a double</p><pre class="codeinput">orig_img = imread(<span class="string">'cameraman.tif'</span>);
+img = double(orig_img)/255;
+
+fourier = dft2D(img);
+
+magn = abs(fourier);
+phase = atan2(imag(fourier), real(fourier));
+phase_res = exp(1i * phase);
+
+<span class="comment">% Log transformed output</span>
+log_transformed = log_transformation(magn, 0.2);
+
+<span class="comment">% Original image reconstruction</span>
+orig = idft2D(fourier);
+
+<span class="comment">% Phase only reconstruction</span>
+phase_reconstruct = mat2gray(abs(idft2D(phase_res)))*30;
+
+figure(<span class="string">'Name'</span>, <span class="string">'Fourier'</span>);
+subplot(131)
+imshow(orig_img);
+title(<span class="string">'Original Image'</span>);
+
+subplot(132)
+imshow(magn);
+title(<span class="string">'Magnitude Response'</span>);
+
+subplot(133)
+imshow(log_transformed);
+title(<span class="string">'Log Transformed'</span>);
+
+figure(<span class="string">'Name'</span>, <span class="string">'Reconstruction'</span>);
+subplot(131)
+imshow(phase);
+title(<span class="string">'Phase Response'</span>);
+
+subplot(132)
+imshow(abs(orig));
+title(<span class="string">'Original Image Reconstruction'</span>);
+
+subplot(133)
+imshow(phase_reconstruct);
+title(<span class="string">'Phase only Image Reconstruction'</span>);
+</pre><img vspace="5" hspace="5" src="Assignment_2_06.png" alt=""> <img vspace="5" hspace="5" src="Assignment_2_07.png" alt=""> <img vspace="5" hspace="5" src="Assignment_2_08.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%NAME: Vatsalya Chaubey
+%INST: IIT, Bhubaneswar
+%DATE: 19.09.2020
+%CATEGORY: Btech
+%BRANCH: Electronics and Communication
+%Roll Number: 17EC01044
+
+%% Image and Video Processing Assignment - 2
+
+clc;
+clear all;
+close all;
+
+%% Question 1: The Maar Edge Detector
+
+% I will first create the functions which are needed for implementation in
+% other parts of the code. Finally, the entire code will be written
+% together to detect the edges.
+
+%% Gaussian Blur Matrix
+% <include>gaussian_blur.m</include>
+
+%% Laplacian of Gaussian Matrix
+% <include>LOG_filter.m</include>
+
+%% Convolution of Matrices
+% <include>convolve.m</include>
+
+%% Zero Crossing Detector
+% <include>zero_crossing.m</include>
+
+%% Maar Edge Detector
+
+% Read the input image as a double
+orig_img = imread('cameraman.tif');
+img = double(orig_img);
+
+% The std deviation of the LOG filter
+std_dev = 0.9;
+filter = LOG_filter(std_dev);
+
+% We need to pad the image with zeros such that after convolution the size
+% of the image is not reduced.
+pad = size(filter,1) - 1;
+padded_img = padding(img, pad, pad, 0);
+
+% Convolve with the filter
+out = convolve(padded_img, filter);
+
+% To detect the edges we need to detect the zero crossings
+edges0 = zero_crossing(out, 0);
+edges4 = zero_crossing(out, 4);
+edges6 = zero_crossing(out, 6);
+edges10 = zero_crossing(out, 10);
+
+figure('Name', 'Maar Edge Detector');
+subplot(131)
+imshow(orig_img);
+title('Original Image');
+
+subplot(132)
+imshow(out);
+title('Convolution with LOG filter (Std dev = 0.9)');
+
+subplot(133)
+imshow(edges0);
+title('Threshold = 0');
+
+figure('Name','Edges for different thresholds');
+subplot(131)
+imshow(edges4);
+title('Threshold = 4');
+
+subplot(132)
+imshow(edges6);
+title('Threshold = 6');
+
+subplot(133)
+imshow(edges10);
+title('Threshold = 10');
+
+% Repeating the same set with different std dev
+
+% The std deviation of the LOG filter
+std_dev = 2;
+filter = LOG_filter(std_dev);
+
+% We need to pad the image with zeros such that after convolution the size
+% of the image is not reduced.
+pad = size(filter,1) - 1;
+padded_img = padding(img, pad, pad, 0);
+
+% Convolve with the filter
+out = convolve(padded_img, filter);
+
+% To detect the edges we need to detect the zero crossings
+edges0 = zero_crossing(out, 0);
+edges4 = zero_crossing(out, 4);
+edges6 = zero_crossing(out, 6);
+edges10 = zero_crossing(out, 10);
+
+figure('Name', 'Maar Edge Detector');
+subplot(131)
+imshow(orig_img);
+title('Original Image');
+
+subplot(132)
+imshow(out);
+title('Convolution with LOG filter (Std dev = 2)');
+
+subplot(133)
+imshow(edges0);
+title('Threshold = 0');
+
+figure('Name','Edges for different thresholds');
+subplot(131)
+imshow(edges4);
+title('Threshold = 4');
+
+subplot(132)
+imshow(edges6);
+title('Threshold = 6');
+
+subplot(133)
+imshow(edges10);
+title('Threshold = 10');
+
+
+%% Question 2: Canny Edge Detection
+
+% Creating other needed functions
+
+%% Gradient of an image
+% <include>grad_filter.m</include>
+
+%% Nonmax supression
+% <include>nonmax_supression.m</include>
+
+%% Thresholding
+% <include>thresholding.m</include>
+
+%% Canny Edge Detector
+% <include>Canny_edge.m</include>
+
+%% Canny Edge Results
+% Read the input image
+% Read the input image as a double
+orig_img = imread('cameraman.tif');
+img = double(orig_img);
+
+output4 = Canny_edge(img, 0.4, 200);
+output30 = Canny_edge(img, 3, 20);
+
+figure('Name', 'Canny Edge Detector');
+subplot(131)
+imshow(orig_img);
+title('Original Image');
+
+subplot(132)
+imshow(output4);
+title('Threshold=200, Std dev=0.4');
+
+subplot(133)
+imshow(output30);
+title('Threshold=20, Std dev=3');
+
+
+%% Question 3: Phase only reconstruction
+
+% Here, again we will write the dft and idft functions 
+
+%% Discrete Fourier Transform
+% <include>dft2D.m</include>
+
+%% Log Transformation
+% <include>log_transformation.m</include>
+
+%% Phase only reconstruction
+% Read the input image
+% Read the input image as a double
+orig_img = imread('cameraman.tif');
+img = double(orig_img)/255;
+
+fourier = dft2D(img);
+
+magn = abs(fourier);
+phase = atan2(imag(fourier), real(fourier));
+phase_res = exp(1i * phase);
+
+% Log transformed output
+log_transformed = log_transformation(magn, 0.2);
+
+% Original image reconstruction
+orig = idft2D(fourier);
+
+% Phase only reconstruction
+phase_reconstruct = mat2gray(abs(idft2D(phase_res)))*30;
+
+figure('Name', 'Fourier');
+subplot(131)
+imshow(orig_img);
+title('Original Image');
+
+subplot(132)
+imshow(magn);
+title('Magnitude Response');
+
+subplot(133)
+imshow(log_transformed);
+title('Log Transformed');
+
+figure('Name', 'Reconstruction');
+subplot(131)
+imshow(phase);
+title('Phase Response');
+
+subplot(132)
+imshow(abs(orig));
+title('Original Image Reconstruction');
+
+subplot(133)
+imshow(phase_reconstruct);
+title('Phase only Image Reconstruction');
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

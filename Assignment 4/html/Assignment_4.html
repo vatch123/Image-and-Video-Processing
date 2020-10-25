@@ -1,0 +1,362 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Assignment_4</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-25"><meta name="DC.source" content="Assignment_4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Image and Video Processing Assignment - 4</a></li><li><a href="#3">Question 1: Salt and Pepper Noise</a></li><li><a href="#4">Salt and Pepper Noise addition example</a></li><li><a href="#5">Question 2: Median Filter</a></li><li><a href="#6">Noise removal using Median filter</a></li><li><a href="#7">Question 3: Contraharmonic mean filter</a></li><li><a href="#8">Noise removal using Contraharmonic mean filter</a></li><li><a href="#9">Conclusion</a></li></ul></div><pre class="codeinput"><span class="comment">%NAME: Vatsalya Chaubey</span>
+<span class="comment">%INST: IIT, Bhubaneswar</span>
+<span class="comment">%DATE: 4.10.2020</span>
+<span class="comment">%CATEGORY: Btech</span>
+<span class="comment">%BRANCH: Electronics and Communication</span>
+<span class="comment">%Roll Number: 17EC01044</span>
+</pre><h2 id="2">Image and Video Processing Assignment - 4</h2><pre class="codeinput">clc;
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+</pre><h2 id="3">Question 1: Salt and Pepper Noise</h2><pre class="language-matlab">
+<span class="comment">% The function adds salt and pepper noise to input image</span>
+<span class="keyword">function</span> [out] = salt_and_pepper(img, level)
+<span class="comment">% img: Input image on which noise is to be added</span>
+<span class="comment">% level: The level of noise</span>
+<span class="comment">%</span>
+<span class="comment">% out: Output image</span>
+
+[row, col] = size(img);
+noise_function = randi(255, row, col);
+
+out = img;
+
+<span class="comment">% Adding salt and pepper noise</span>
+out(noise_function&lt;=level) = 0;
+out(noise_function&gt;=255-level) = 255;
+
+<span class="keyword">end</span>
+
+
+</pre><h2 id="4">Salt and Pepper Noise addition example</h2><p>The salt and pepper noise is added to an image</p><pre class="codeinput"><span class="comment">% Read the input image</span>
+<span class="comment">% Read the input image as a double</span>
+orig_img = imread(<span class="string">'fingerprint.jpg'</span>);
+orig_img = rgb2gray(orig_img);
+img = double(orig_img);
+
+<span class="comment">% Salt and Pepper Noise addition</span>
+out = salt_and_pepper(img, 10);
+out = mat2gray(out);
+
+figure(<span class="string">'Name'</span>, <span class="string">'Salt and Pepper'</span>);
+subplot(121)
+imshow(orig_img);
+title(<span class="string">'Original Image'</span>);
+
+subplot(122)
+imshow(out);
+title(<span class="string">'Noisy Image'</span>);
+</pre><img vspace="5" hspace="5" src="Assignment_4_01.png" alt=""> <h2 id="5">Question 2: Median Filter</h2><pre class="language-matlab">
+<span class="comment">% The function removes noise using median filter</span>
+<span class="keyword">function</span> [out] = median_filter(img, filter_size)
+<span class="comment">% img: Input image on which noise is to be added</span>
+<span class="comment">% filter_size: The size of the median filter</span>
+<span class="comment">% out: Output image</span>
+
+[row, col] = size(img);
+out = img;
+
+<span class="keyword">for</span> i = 1+floor(filter_size/2):row - floor(filter_size/2)
+    <span class="keyword">for</span> j = 1+floor(filter_size/2):col - floor(filter_size/2)
+        x_start = i - floor(filter_size/2);
+        y_start = j - floor(filter_size/2);
+        
+        x_end = i + floor(filter_size/2);
+        y_end = j + floor(filter_size/2);
+        
+        <span class="comment">% Replacing with the median value</span>
+        img_section = img(x_start:x_end, y_start:y_end);
+        out(i,j) = median(img_section, <span class="string">'all'</span>);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+
+</pre><h2 id="6">Noise removal using Median filter</h2><p>This demonstrates removal of salt and pepper noise using a median filter</p><pre class="codeinput"><span class="comment">% Read the input image</span>
+<span class="comment">% Read the input image as a double</span>
+orig_img = imread(<span class="string">'fingerprint.jpg'</span>);
+orig_img = rgb2gray(orig_img);
+img = double(orig_img);
+
+<span class="comment">% Salt and Pepper Noise addition</span>
+out = salt_and_pepper(img, 10);
+out = mat2gray(out);
+
+<span class="comment">% Median filtering</span>
+out1 = median_filter(out, 3);
+out1 = mat2gray(out1);
+
+figure(<span class="string">'Name'</span>, <span class="string">'Median Filtering'</span>);
+subplot(131)
+imshow(orig_img);
+title(<span class="string">'Original Image'</span>);
+
+subplot(132)
+imshow(out);
+title(<span class="string">'Noisy Image'</span>);
+
+subplot(133)
+imshow(out1);
+title(<span class="string">'Median filtered image (Size = 3)'</span>);
+</pre><img vspace="5" hspace="5" src="Assignment_4_02.png" alt=""> <h2 id="7">Question 3: Contraharmonic mean filter</h2><pre class="language-matlab">
+<span class="comment">% The function removes noise using median filter</span>
+<span class="keyword">function</span> [out] = contraharmonic_mean(img, filter_size, Q)
+<span class="comment">% img: Input image on which noise is to be added</span>
+<span class="comment">% filter_size: The size of the median filter</span>
+<span class="comment">% Q: The order of the filter</span>
+<span class="comment">% out: Output image</span>
+
+[row, col] = size(img);
+out = img;
+
+<span class="keyword">for</span> i = 1+floor(filter_size/2):row - floor(filter_size/2)
+    <span class="keyword">for</span> j = 1+floor(filter_size/2):col - floor(filter_size/2)
+        x_start = i - floor(filter_size/2);
+        y_start = j - floor(filter_size/2);
+        
+        x_end = i + floor(filter_size/2);
+        y_end = j + floor(filter_size/2);
+        
+        img_section = img(x_start:x_end, y_start:y_end);
+        
+        <span class="comment">% Finding the contraharmonic mean</span>
+        num = sum(sum(img_section.^(Q+1)));
+        den = sum(sum(img_section.^(Q)));
+        
+        out(i,j) = num / den;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+
+</pre><h2 id="8">Noise removal using Contraharmonic mean filter</h2><p>This demonstrates removal of salt and pepper noise using a contraharmonic mean filter</p><pre class="codeinput"><span class="comment">% Read the input image</span>
+<span class="comment">% Read the input image as a double</span>
+orig_img = imread(<span class="string">'fingerprint.jpg'</span>);
+orig_img = rgb2gray(orig_img);
+img = double(orig_img);
+
+<span class="comment">% Salt and Pepper Noise addition</span>
+out = salt_and_pepper(img, 10);
+out = mat2gray(out);
+
+<span class="comment">% Contraharmonic mean filtering with positive Q</span>
+out1 = contraharmonic_mean(out, 3, 1);
+out1 = mat2gray(out1);
+
+<span class="comment">% Contraharmonic mean filtering with negative Q</span>
+out2 = contraharmonic_mean(out, 3, -1);
+out2 = mat2gray(out2);
+
+figure(<span class="string">'Name'</span>, <span class="string">'Contraharmonic Mean Filtering'</span>);
+subplot(221)
+imshow(orig_img);
+title(<span class="string">'Original Image'</span>);
+
+subplot(222)
+imshow(out);
+title(<span class="string">'Noisy Image'</span>);
+
+subplot(223)
+imshow(out1);
+title(<span class="string">'Contraharmonic Mean Filtering (Q=1)'</span>);
+
+subplot(224)
+imshow(out2);
+title(<span class="string">'Contraharmonic Mean Filtering (Q = -1)'</span>);
+</pre><img vspace="5" hspace="5" src="Assignment_4_03.png" alt=""> <h2 id="9">Conclusion</h2><p>This experiment demonstrates how impulse noise (salt and pepper) can be added to an image. We also learnt how such impulse noises can be removed using median and contraharmonic mean filters. Contraharmonic mean filter is very senstitive to the value of Q or the order. The positive value of Q can be used to remove pepper noise and the negative value can be used to remove salt noise, but not both simultaneously.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%NAME: Vatsalya Chaubey
+%INST: IIT, Bhubaneswar
+%DATE: 4.10.2020
+%CATEGORY: Btech
+%BRANCH: Electronics and Communication
+%Roll Number: 17EC01044
+
+%% Image and Video Processing Assignment - 4
+
+clc;
+clear all;
+close all;
+
+%% Question 1: Salt and Pepper Noise
+% <include>salt_and_pepper.m</include>
+
+%% Salt and Pepper Noise addition example
+% The salt and pepper noise is added to an image
+
+% Read the input image
+% Read the input image as a double
+orig_img = imread('fingerprint.jpg');
+orig_img = rgb2gray(orig_img);
+img = double(orig_img);
+
+% Salt and Pepper Noise addition
+out = salt_and_pepper(img, 10);
+out = mat2gray(out);
+
+figure('Name', 'Salt and Pepper');
+subplot(121)
+imshow(orig_img);
+title('Original Image');
+
+subplot(122)
+imshow(out);
+title('Noisy Image');
+
+
+%% Question 2: Median Filter
+% <include>median_filter.m</include>
+
+%% Noise removal using Median filter
+% This demonstrates removal of salt and pepper noise using a median filter
+
+% Read the input image
+% Read the input image as a double
+orig_img = imread('fingerprint.jpg');
+orig_img = rgb2gray(orig_img);
+img = double(orig_img);
+
+% Salt and Pepper Noise addition
+out = salt_and_pepper(img, 10);
+out = mat2gray(out);
+
+% Median filtering
+out1 = median_filter(out, 3);
+out1 = mat2gray(out1);
+
+figure('Name', 'Median Filtering');
+subplot(131)
+imshow(orig_img);
+title('Original Image');
+
+subplot(132)
+imshow(out);
+title('Noisy Image');
+
+subplot(133)
+imshow(out1);
+title('Median filtered image (Size = 3)');
+
+%% Question 3: Contraharmonic mean filter
+% <include>contraharmonic_mean.m</include>
+
+%% Noise removal using Contraharmonic mean filter
+% This demonstrates removal of salt and pepper noise using a contraharmonic 
+% mean filter
+
+% Read the input image
+% Read the input image as a double
+orig_img = imread('fingerprint.jpg');
+orig_img = rgb2gray(orig_img);
+img = double(orig_img);
+
+% Salt and Pepper Noise addition
+out = salt_and_pepper(img, 10);
+out = mat2gray(out);
+
+% Contraharmonic mean filtering with positive Q
+out1 = contraharmonic_mean(out, 3, 1);
+out1 = mat2gray(out1);
+
+% Contraharmonic mean filtering with negative Q
+out2 = contraharmonic_mean(out, 3, -1);
+out2 = mat2gray(out2);
+
+figure('Name', 'Contraharmonic Mean Filtering');
+subplot(221)
+imshow(orig_img);
+title('Original Image');
+
+subplot(222)
+imshow(out);
+title('Noisy Image');
+
+subplot(223)
+imshow(out1);
+title('Contraharmonic Mean Filtering (Q=1)');
+
+subplot(224)
+imshow(out2);
+title('Contraharmonic Mean Filtering (Q = -1)');
+
+
+%% Conclusion
+% This experiment demonstrates how impulse noise (salt and pepper) can be
+% added to an image. We also learnt how such impulse noises can be removed
+% using median and contraharmonic mean filters. Contraharmonic mean filter
+% is very senstitive to the value of Q or the order. The positive value of
+% Q can be used to remove pepper noise and the negative value can be used
+% to remove salt noise, but not both simultaneously.
+
+##### SOURCE END #####
+--></body></html>
